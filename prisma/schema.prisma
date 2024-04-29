@@ -63,6 +63,23 @@ model AdminUser {
   name      String   @unique
   password  String   @map("password")
   createdAt DateTime @default(now()) @map("created_at")
+  role      Role     @map("role")
+
+  Token Token[]
 
   @@map("admin_users")
+}
+
+model Token {
+  token  String    @unique
+  exp    DateTime
+  user   AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String    @map("user_id")
+
+  @@map("tokens")
+}
+
+enum Role {
+  ADMIN
+  SUPER_ADMIN
 }
